@@ -1,0 +1,15 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/service-worker.js", "destination": "/.output/public/service-worker.js" },
+    { "source": "/manifest.webmanifest", "destination": "/.output/public/manifest.webmanifest" }
+  ],
+  "headers": [
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" }
+      ]
+    }
+  ]
+}

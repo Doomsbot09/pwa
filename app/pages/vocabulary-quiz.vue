@@ -3,6 +3,7 @@
         layout: 'category'
     })
 
+    const router = useRouter()
     const questionSet = ref([
         {
             question: `What is the meaning of the word "room" in English?`,
@@ -99,6 +100,7 @@
     let currentSet = ref(0)
     let selectedAnswer = ref(null)
     let showMessage = ref('')
+    let showModal = ref(false)
 
     const selectAnswer = async (answer, index) => {
         selectedAnswer.value = index
@@ -118,6 +120,8 @@
                 score.value += 1
             }
 
+            showModal.value = true
+
             setTimeout(() => {
                 selectedAnswer.value = null
                 showMessage.value = ''
@@ -126,7 +130,10 @@
             console.log("save to score board")
         }
     }
-    
+
+    const backToHome = async () => {
+        router.push('/')
+    }
 </script>
 
 <template>
@@ -186,6 +193,16 @@
             </router-link>
         </div>
     </div>
+    <Dialog 
+        :show-modal="showModal"
+        :show-btn="true"
+        :backdrop="true"
+        @close="backToHome()">
+        <div class="modal-content">
+            <span>Job Well Done!</span>
+            <p>You Got A Score Of {{ score }} Out Of {{ questionSet.length }}</p>
+        </div>
+    </Dialog>
 </template>
 
 <style>
@@ -290,6 +307,26 @@
         }
     }
 
+    .modal-content {
+        height: 11vh;
+        width: 36vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0.5rem;
+
+        span {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    }
+
     /* Mobile */
     /* Responsive: 2 columns on tablets, 1 on mobile */
     @media (max-width: 1024px) {
@@ -318,6 +355,10 @@
             .section-bottom {
                 margin-top: 1rem;
             }
+        }
+
+        .modal-content {
+            width: 80vw;
         }
     }
 </style>

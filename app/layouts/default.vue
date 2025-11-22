@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// you can extract the <ClientOnly> component to a separate file
+
 </script>
 
 <template>
@@ -37,7 +37,7 @@
       >
         <div class="message">
           <span id="install-pwa">
-            Install PWA
+            Install This App
           </span>
         </div>
         <button @click="$pwa.install()">

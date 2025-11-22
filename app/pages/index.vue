@@ -1,20 +1,84 @@
-<script setup lang="ts">
-//
+<script setup>
+  const categories = ref([
+    {
+      name: "Vocabulary Words",
+      description: "Syllabication, pronunciation, meaning and sentences in English, Filipino and Hiligaynon",
+      icon: "vocabulary-default.png",
+      link: "/vocabulary",
+      btnLabel: "Learn"
+    },
+    {
+      name: "Pronunciation Practice",
+      description: "Practice pronunciation with drills",
+      icon: "pronunciation.png",
+      link: "/pronunciation",
+      btnLabel: "Learn"
+    },
+    {
+      name: "Word Recognition",
+      description: "Word Recognition and Fluency Activities",
+      icon: "word-recognition.png",
+      link: "/word-recognition",
+      btnLabel: "Play Game"
+    },
+    {
+      name: "Matching Game",
+      description: "Match words with their meanings",
+      icon: "matching.png",
+      link: "/matching-game",
+      btnLabel: "Play Game"
+    },
+    {
+      name: "Multilingual Sentence Building",
+      description: "Multilingual Sentence Building Exercises",
+      icon: "multilingual.png",
+      link: "/sentence-building",
+      btnLabel: "Play Game"
+    },
+    {
+      name: "Vocabulary Quiz",
+      description: "Assessment Quiz in English, Filipino and Hiligaynon",
+      icon: "vocabulary.png",
+      link: "/vocabulary-quiz",
+      btnLabel: "Play Game"
+    }
+  ])
 </script>
 
 <template>
   <div class="container">
     <div class="section_left">
-      <h1>Banner</h1>
-      <h2>Project Name</h2>
-      <h3>Project Description</h3>      
-      <button>Score Board</button>
+      <Card class="banner">
+        <div class="banner-content">
+          <span class="project-title">WELCOME TO TIES</span>
+          <span class="project-subtitle">(Three Language In Everyday Speech)</span>
+          <span class="project-description">an Intervention Design to Enhance Pupil's Vocabulary through Multilingual Learning</span>
+          <router-link to="/scoreboard">
+            <Button label="Score Board" />
+          </router-link>
+        </div>
+      </Card>
     </div>
     <div class="section_right">
       <div class="grid-container">
-        <div class="grid-item" v-for="n in 6" :key="n">
+        <div class="grid-item" v-for="(item, index) in categories" :key="index">
           <Card>
-            <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus non, voluptas ratione excepturi repellendus omnis fugit eos, veritatis consequuntur quasi obcaecati itaque nostrum illum saepe. Qui amet voluptas recusandae aspernatur.</span>
+            <div class="category">
+              <div class="category-top">
+                <NuxtImg class="icon" :src="`/${item.icon}`" />
+                <span class="category-title">
+                  {{ item.name }}
+                </span>
+                <span class="category-description">
+                  {{ item.description }}
+                </span>
+              </div>
+              <div class="category-bottom">
+                <router-link :to="item.link">
+                  <Button :label="item.btnLabel" />
+                </router-link>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
@@ -30,13 +94,45 @@
     flex-direction: row;
 
     .section_left {
-      border: 1px solid green;
       height: 100%;
       width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .banner {
+        width: 70%;
+        height: 70%;
+      }
+
+      .banner-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 1.5rem;
+
+        .project-title {
+          font-size: 2.5rem;
+          font-weight: 800;
+        }
+
+        .project-subtitle {
+          font-size: 1.5rem;
+          font-weight: 600;
+        }
+
+        .project-decription {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
     }
 
     .section_right {
-      border: 1px solid blue;
       height: 100%;
       width: 50%;
 
@@ -48,26 +144,110 @@
         padding: 16px;
       }
 
-      /* Responsive: 2 columns on tablets, 1 on mobile */
-      @media (max-width: 1024px) {
-        .grid-container {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (max-width: 600px) {
-        .grid-container {
-          grid-template-columns: 1fr;
-        }
-      }
-
       .grid-item {
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 8px;
+
+        .category {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .category-top {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-around;
+          text-align: center;
+          gap: 1rem;
+
+          
+          .icon {
+            width: 4rem;
+          }
+
+          .category-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+
+          .category-description {
+            font-weight: 500;
+          }
+        }
       }
+    }
+  }
+
+  /* Responsive: 2 columns on tablets, 1 on mobile */
+  @media (max-width: 1024px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      display: block;
+      
+      .section_left {
+        height: auto;
+        min-height: 50%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        place-items: center;
+
+        .banner {
+          height: 90%;
+          width: 90%;
+
+          .banner-content {
+            justify-content: space-between;
+            height: 40vh;
+
+            .project-title {
+              font-size: 1.5rem;
+            }
+
+            .project-subtitle {
+              font-size: 1rem;
+            }
+
+            .project-decription {
+              font-size: 0.5rem;
+            }
+          }
+        }
+      }
+
+      .section_right {
+        height: auto;
+        width: 100%;
+        
+        .grid-container {
+          grid-template-columns: 1fr;
+
+          .grid-item {
+
+            .category {
+              
+              .category-top {
+                gap: 1rem;
+                justify-content: flex-start;
+                height: 35vh;
+              }
+            }
+          }
+        }
+      }
+      
     }
   }
 </style>

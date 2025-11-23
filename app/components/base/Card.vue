@@ -1,9 +1,5 @@
 <script setup>
   const props = defineProps({
-    style: {
-      type: String,
-      default: ''
-    },
     class: {
       type: String,
       default: ''
@@ -12,7 +8,7 @@
 </script>
 
 <template>
-    <q-card class="card" :class="props.class" :style="props.style">
+    <q-card class="card" :class="props.class">
       <q-card-section class="section">
         <slot></slot>
       </q-card-section>

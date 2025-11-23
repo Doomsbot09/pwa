@@ -9,7 +9,13 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@vite-pwa/nuxt', 'nuxt-quasar-ui', '@nuxt/image'],
+  modules: [
+    '@vite-pwa/nuxt', 
+    '@nuxt/image',
+    '@pinia/nuxt',
+    'nuxt-quasar-ui',
+    'pinia-plugin-persistedstate/nuxt'
+  ],
 
   pwa: {
     registerType: 'autoUpdate',

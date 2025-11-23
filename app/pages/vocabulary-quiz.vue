@@ -6,96 +6,79 @@
     const router = useRouter()
     const questionSet = ref([
         {
-            question: `What is the meaning of the word "room" in English?`,
+            question: `The twins often dress <u>alike</u>.`,
             choices: [
-                { name: "A small furry animal", answer: false },
-                { name: "A space in a building", answer: true },
-                { name: "A tool for writing", answer: false },
-                { name: "An animal that can fly", answer: false }
+            { name: "different", answer: false },
+            { name: "similar", answer: true },
+            { name: "opposite", answer: false },
+            { name: "rare", answer: false }
             ]
         },
         {
-            question: `What does the word "bright" mean in English?`,
+            question: `I am <u>almost</u> finished with my work. What is the meaning of the underlined word?`,
             choices: [
-                { name: "Full of light", answer: true },
-                { name: "Very slow", answer: false },
-                { name: "Covered in mud", answer: false },
-                { name: "Hard to hear", answer: false }
+            { name: "completely", answer: false },
+            { name: "hardly", answer: false },
+            { name: "nearly", answer: true },
+            { name: "slowly", answer: false }
             ]
         },
         {
-            question: `What is the opposite of "hot"?`,
+            question: `The kittens <u>attempted</u> to follow the rat up the tree. Attempted means_____.`,
             choices: [
-                { name: "Warm", answer: false },
-                { name: "Cold", answer: true },
-                { name: "Spicy", answer: false },
-                { name: "Soft", answer: false }
+            { name: "refused", answer: false },
+            { name: "tried", answer: true },
+            { name: "ran", answer: false },
+            { name: "waited", answer: false }
             ]
         },
         {
-            question: `What does the word "quickly" describe?`,
+            question: `Will you <u>allow</u> me to use your bicycle?`,
             choices: [
-                { name: "How something moves", answer: true },
-                { name: "Why something happens", answer: false },
-                { name: "Who is speaking", answer: false },
-                { name: "Where someone lives", answer: false }
+            { name: "permit", answer: true },
+            { name: "stop", answer: false },
+            { name: "fix", answer: false },
+            { name: "hide", answer: false }
             ]
         },
         {
-            question: `What is the plural of "child"?`,
+            question: `The child’s speed in solving problems <u>amazed</u> us.`,
             choices: [
-                { name: "Childs", answer: false },
-                { name: "Children", answer: true },
-                { name: "Childes", answer: false },
-                { name: "Childrens", answer: false }
+            { name: "bored", answer: false },
+            { name: "surprised", answer: true },
+            { name: "angered", answer: false },
+            { name: "frightened", answer: false }
             ]
         },
         {
-            question: `Ano ang kahulugan ng salitang "bahay"?`,
+            question: `We brought <u>ample</u> food for our camping trip.`,
             choices: [
-                { name: "Lugar na tinitirhan", answer: true },
-                { name: "Isang uri ng hayop", answer: false },
-                { name: "Kagamitan sa pagluluto", answer: false },
-                { name: "Sasakyang panghimpapawid", answer: false }
+            { name: "little", answer: false },
+            { name: "enough", answer: true },
+            { name: "spoiled", answer: false },
+            { name: "none", answer: false }
             ]
         },
         {
-            question: `Ano ang kasalungat ng salitang "malakas"?`,
+            question: `The loud sound from the radio <u>annoys</u> me.`,
             choices: [
-                { name: "Mahina", answer: true },
-                { name: "Mabagal", answer: false },
-                { name: "Mataas", answer: false },
-                { name: "Mainit", answer: false }
+            { name: "makes me happy", answer: false },
+            { name: "makes me laugh", answer: false },
+            { name: "makes me irritated", answer: true },
+            { name: "makes me excited", answer: false }
             ]
         },
         {
-            question: `Ano ang ibig sabihin ng "masaya"?`,
+            question: `The train is <u>bound</u> for Manila.`,
             choices: [
-                { name: "Malungkot", answer: false },
-                { name: "Masigla at masaya ang pakiramdam", answer: true },
-                { name: "Gutóm", answer: false },
-                { name: "Pagod", answer: false }
-            ]
-        },
-        {
-            question: `Ano ang tamang baybay ng salitang nangangahulugang 'teacher' sa Filipino?`,
-            choices: [
-                { name: "Titser", answer: true },
-                { name: "Ticher", answer: false },
-                { name: "Titsher", answer: false },
-                { name: "Titsir", answer: false }
-            ]
-        },
-        {
-            question: `Ano ang tawag sa pangngalang tumutukoy sa ngalan ng tao, bagay, hayop o lugar?`,
-            choices: [
-                { name: "Pangngalan", answer: true },
-                { name: "Pandiwa", answer: false },
-                { name: "Pangatnig", answer: false },
-                { name: "Pang-uri", answer: false }
+            { name: "leaving", answer: false },
+            { name: "headed", answer: true },
+            { name: "arriving", answer: false },
+            { name: "stopped", answer: false }
             ]
         }
-    ])
+    ]);
+
     let score = ref(0)
     let currentSet = ref(0)
     let selectedAnswer = ref(null)
@@ -162,8 +145,10 @@
             </Card>
             <Card class="section-2">
                 <div class="section-top">
+                    <label for="instruction">Instruction</label>
+                    <span>Choose the meaning of the underlined words in English.</span>
                     <label for="question">Question {{ currentSet + 1 }}</label>
-                    <span>{{ questionSet[currentSet]['question'] }}</span>
+                    <span v-html="questionSet[currentSet]['question']"></span>
                 </div>
             
                 <div class="grid-container">
@@ -279,10 +264,12 @@
                 width: 100%;
 
                 .section-top {
+                    height: 40%;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: flex-start;
+                    gap: 0.5rem;
 
                     label {
                         font-size: large;

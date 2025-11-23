@@ -2,13 +2,160 @@
     definePageMeta({
         layout: 'category'
     })
+
+    const fields = ref([
+        {
+            name: 'name',
+            label: 'Name'
+        },
+        {
+            name: 'grade',
+            label: 'Grade'
+        },
+        {
+            name: 'section',
+            label: 'Section'
+        },
+        {
+            name: 'category',
+            label: 'Category'
+        },
+        {
+            name: 'score',
+            label: 'Score'
+        },
+        {
+            name: 'date',
+            label: 'Date'
+        }
+    ])
+
+    const data = ref([
+        {
+            name: "Student 1",
+            grade: "4",
+            section: "Planet",
+            category: "Vocabulary Quiz",
+            score: "8",
+            date: new Date().toISOString()
+        },
+        {
+            name: "Student 2",
+            grade: "4",
+            section: "Planet",
+            category: "Vocabulary Quiz",
+            score: "10",
+            date: new Date().toISOString()
+        },
+        {
+            name: "Student 3",
+            grade: "5",
+            section: "Glaxy",
+            category: "Sentence Building",
+            score: "5",
+            date: new Date().toISOString()
+        },
+        {
+            name: "Student 4",
+            grade: "6",
+            section: "Dog",
+            category: "Matching",
+            score: "10",
+            date: new Date().toISOString()
+        }
+    ])
+    
+    const filteredBy = ref('grade')
+    const filterByOptions = ref([
+        {
+            name: 'Grade',
+            value: 'grade'
+        },
+        {
+            name: 'Section',
+            value: 'section'
+        },
+        {
+            name: 'Category',
+            value: 'category'
+        }
+    ])
+
+    const filterItems = ref([
+        {
+            name: 'grade',
+            items: [{
+                name: '4',
+                value: '4'
+            },{
+                name: '5',
+                value: '5'
+            },{
+                name: '6',
+                value: '6'
+            }]
+        },
+        {
+            name: 'section',
+            items: [{
+                name: 'Galaxy',
+                value: 'galaxy'
+            },{
+                name: 'Planet',
+                value: 'planet'
+            },{
+                name: 'Meteor',
+                value: 'meteor'
+            },{
+                name: 'Pearl',
+                value: 'pearl'
+            },{
+                name: 'Sapphire',
+                value: 'sapphire'
+            },{
+                name: 'Topaz',
+                value: 'topaz'
+            },{
+                name: 'Atis',
+                value: 'atis'
+            },{
+                name: 'Guava',
+                value: 'guava'
+            }]
+        },
+        {
+            name: 'category',
+            items: [{
+                name: 'Vocabulary Quiz',
+                value: 'vocabulary-quiz',
+            },{
+                name: 'Matching Game',
+                value: 'matching',
+            },{
+                name: 'Sentence Building',
+                value: 'sentence-building',
+            },{
+                name: 'Word Recognition',
+                value: 'word',
+            }]
+        }
+    ])
+    const computedFilterItems = computed(() => filterItems.value.find((item) => item.name === filteredBy.value))
+
+    const findStudent = async (data) => {
+        
+    }
+
+    const filteredByHandler = async (data) => {
+        filteredBy.value = data
+    }
 </script>
 
 <template>
     <div class="container">
         <div class="section-top">
             <div class="section-1">
-                <NuxtImg class="icon" src="/vocabulary.png" />
+                <NuxtImg class="icon" src="/scoreboard.png" />
                 <span class="title">Scoreboard</span>
             </div>
             <div class="section-2">
@@ -16,7 +163,18 @@
             </div>
         </div>
         <div class="section-body">
-            <ComingSoon />
+            <Table 
+                title="Students Score"
+                :data="data"
+                :fields="fields"
+                :sortable="true"
+                :searchable="true"
+                :filterable="true"
+                :filter-by="filterByOptions"
+                :filter-item="computedFilterItems.items"
+                @search="findStudent"
+                @filteredBySelected="filteredByHandler"
+            />
         </div>
         <div class="section-bottom">
             <Button label="Next" />
@@ -45,6 +203,7 @@
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
+                gap: 0.5rem;
 
                 .icon {
                     width: 2rem;
@@ -54,6 +213,11 @@
                     font-size: xx-large;
                 }
             }
+        }
+
+        .section-body {
+            width: 100%;
+            padding: 1rem 0;
         }
 
         .section-bottom {

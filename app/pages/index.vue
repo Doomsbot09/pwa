@@ -1,4 +1,7 @@
 <script setup>
+  import { useAuthStore } from "../../store/auth"
+
+  const authStore = useAuthStore()
   const categories = ref([
     {
       name: "Vocabulary Words",
@@ -46,11 +49,20 @@
 </script>
 
 <template>
+  <Dialog :show-modal="authStore.checkIfNewUser()">
+    <div class="modal-container">
+      <div class="header">
+        <label for="title">Hello There!</label>
+        <span>Lets start by telling me your info</span>
+      </div>
+      <CreateUser></CreateUser>
+    </div>
+  </Dialog>
   <div class="container">
     <div class="section_left">
       <Card class="banner">
         <div class="banner-content">
-          <span class="project-title">WELCOME TO TIES</span>
+          <span class="project-title">WELCOME TO TIES {{ authStore.userDetails.firstname }}</span>
           <span class="project-subtitle">(Three Language In Everyday Speech)</span>
           <span class="project-description">an Intervention Design to Enhance Pupil's Vocabulary through Multilingual Learning</span>
           <router-link to="/scoreboard">
@@ -181,6 +193,27 @@
             font-weight: 500;
           }
         }
+      }
+    }
+  }
+
+  .modal-container {
+    padding: 0.5rem;
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      label {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      span {
+        font-size: 1rem;
+        font-weight: 500;
       }
     }
   }

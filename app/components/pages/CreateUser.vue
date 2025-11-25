@@ -4,6 +4,8 @@
 
     const required = (val: any) => !!val || 'This field is required'
     const authStore = useAuthStore()
+    const emits = defineEmits(['submit'])
+
     const firstname = ref('')
     const lastname = ref('')
     const grade = ref(null)
@@ -35,6 +37,7 @@
       }
 
       authStore.saveUserDetails(payload)
+      emits('submit')
     }
 </script>
 

@@ -1,7 +1,11 @@
 <script setup>
+    import User from '@/api/users'
+
     definePageMeta({
         layout: 'category'
     })
+
+    const user = User()
 
     const fields = ref([
         {
@@ -17,8 +21,8 @@
             label: 'Section'
         },
         {
-            name: 'category',
-            label: 'Category'
+            name: 'game',
+            label: 'Game'
         },
         {
             name: 'score',
@@ -30,40 +34,7 @@
         }
     ])
 
-    const data = ref([
-        {
-            name: "Student 1",
-            grade: "4",
-            section: "Planet",
-            category: "Vocabulary Quiz",
-            score: "8",
-            date: new Date().toISOString()
-        },
-        {
-            name: "Student 2",
-            grade: "4",
-            section: "Planet",
-            category: "Vocabulary Quiz",
-            score: "10",
-            date: new Date().toISOString()
-        },
-        {
-            name: "Student 3",
-            grade: "5",
-            section: "Glaxy",
-            category: "Sentence Building",
-            score: "5",
-            date: new Date().toISOString()
-        },
-        {
-            name: "Student 4",
-            grade: "6",
-            section: "Dog",
-            category: "Matching",
-            score: "10",
-            date: new Date().toISOString()
-        }
-    ])
+    const data = ref([])
     
     const filteredBy = ref('grade')
     const filterByOptions = ref([
@@ -149,6 +120,19 @@
     const filteredByHandler = async (data) => {
         filteredBy.value = data
     }
+
+    const getUsers = async () => {
+        const resp = await user.getScores()
+        if(resp) {
+            data.value = resp.data.value.users.map((item) => ({...item, name: `${item.firstname} ${item.lastname}`}))
+        } else {
+            alert("No Internet")
+        }
+    }
+
+    onMounted(async() => {
+        await getUsers()
+    })
 </script>
 
 <template>

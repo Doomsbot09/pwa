@@ -1,9 +1,16 @@
 <script setup>
+    import { useAuthStore } from "../../store/auth"    
+    import User from '@/api/users'
+    
     definePageMeta({
         layout: 'category'
     })
 
+    const authStore = useAuthStore()
     const router = useRouter()
+    const user = User()
+
+    const showModalUser = ref(true)
     const questionSet = ref([
         {
             question: `The twins often dress <u>alike</u>.`,
@@ -109,17 +116,36 @@
                 selectedAnswer.value = null
                 showMessage.value = ''
             }, 1000)
-
-            console.log("save to score board")
         }
     }
 
-    const backToHome = async () => {
-        router.push('/')
+    const saveScore = async () => {
+        const payload = {
+            ...authStore.userDetails,
+            score: score.value,
+            game: "Vocabulary Quiz"
+        }
+        const result = await user.saveGameScore(payload)
+
+        if (result) {
+            console.log(result)
+            router.push('/')
+        } else {
+            alert("No Internet")
+        }
     }
 </script>
 
 <template>
+    <Dialog :show-modal="showModalUser">
+        <div class="modal-container">
+        <div class="header">
+            <label for="title">Hello There!</label>
+            <span>Lets start by telling me your info</span>
+        </div>
+            <CreateUser @submit="showModalUser = false"></CreateUser>
+        </div>
+    </Dialog>
     <div class="container">
         <div class="section-top">
             <div class="section-1">
@@ -182,9 +208,9 @@
         :show-modal="showModal"
         :show-btn="true"
         :backdrop="true"
-        @close="backToHome()">
+        @close="saveScore()">
         <div class="modal-content">
-            <span>Job Well Done!</span>
+            <span>Job Well Done {{ authStore.userDetails.firstname }}!</span>
             <p>You Got A Score Of {{ score }} Out Of {{ questionSet.length }}</p>
         </div>
     </Dialog>
@@ -311,6 +337,27 @@
         p {
             font-size: 1rem;
             font-weight: 500;
+        }
+    }
+
+    .modal-container {
+        padding: 0.5rem;
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            label {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            span {
+                font-size: 1rem;
+                font-weight: 500;
+            }
         }
     }
 

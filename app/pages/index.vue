@@ -1,7 +1,4 @@
 <script setup>
-  import { useAuthStore } from "../../store/auth"
-
-  const authStore = useAuthStore()
   const categories = ref([
     {
       name: "Vocabulary Words",
@@ -11,10 +8,17 @@
       btnLabel: "Learn"
     },
     {
-      name: "Pronunciation Practice",
+      name: "Phrase Reading",
       description: "Practice pronunciation with drills",
       icon: "pronunciation.png",
-      link: "/pronunciation",
+      link: "/phrase-reading",
+      btnLabel: "Learn"
+    },
+    {
+      name: "Sentence Reading",
+      description: "Reading sentence in 3 languages",
+      icon: "sentence-reading.png",
+      link: "/sentence-reading",
       btnLabel: "Learn"
     },
     {
@@ -25,12 +29,19 @@
       btnLabel: "Play Game"
     },
     {
-      name: "Matching Game",
-      description: "Match words with their meanings",
-      icon: "matching.png",
-      link: "/matching-game",
+      name: "Spelling Quiz",
+      description: "Choose the word that is spelled correctly and become a spelling superstar!",
+      icon: "spelling-quiz.png",
+      link: "/spelling",
       btnLabel: "Play Game"
     },
+    // {
+    //   name: "Matching Game",
+    //   description: "Match words with their meanings",
+    //   icon: "matching.png",
+    //   link: "/matching-game",
+    //   btnLabel: "Play Game"
+    // },
     {
       name: "Multilingual Sentence Building",
       description: "Multilingual Sentence Building Exercises",
@@ -49,20 +60,11 @@
 </script>
 
 <template>
-  <Dialog :show-modal="authStore.checkIfNewUser()">
-    <div class="modal-container">
-      <div class="header">
-        <label for="title">Hello There!</label>
-        <span>Lets start by telling me your info</span>
-      </div>
-      <CreateUser></CreateUser>
-    </div>
-  </Dialog>
   <div class="container">
     <div class="section_left">
       <Card class="banner">
         <div class="banner-content">
-          <span class="project-title">WELCOME TO TIES {{ authStore.userDetails.firstname }}</span>
+          <span class="project-title">WELCOME TO TIES</span>
           <span class="project-subtitle">(Three Language In Everyday Speech)</span>
           <span class="project-description">an Intervention Design to Enhance Pupil's Vocabulary through Multilingual Learning</span>
           <router-link to="/scoreboard">
@@ -145,7 +147,8 @@
     }
 
     .section_right {
-      height: 100%;
+      height: 100vh;
+      overflow-y: auto;
       width: 50%;
 
       .grid-container {
@@ -193,27 +196,6 @@
             font-weight: 500;
           }
         }
-      }
-    }
-  }
-
-  .modal-container {
-    padding: 0.5rem;
-
-    .header {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      label {
-        font-size: 1.5rem;
-        font-weight: 600;
-      }
-
-      span {
-        font-size: 1rem;
-        font-weight: 500;
       }
     }
   }

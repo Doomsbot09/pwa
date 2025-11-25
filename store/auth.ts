@@ -6,12 +6,12 @@ export const useAuthStore = defineStore('auth', {
             firstname: "",
             lastname: "",
             grade: "",
-            section: ""
+            section: "",
+            date: new Date().toISOString()
         },
         gameDetails: {
             name: "",
             score: "",
-            date: new Date().toISOString()
         }
     }),
 
@@ -37,6 +37,6 @@ export const useAuthStore = defineStore('auth', {
     },
 
     persist: {
-        pick: ['userDetails']
+        pick: ['userDetails', 'gameDetails']
     }
 })

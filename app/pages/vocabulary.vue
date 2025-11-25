@@ -1,8 +1,12 @@
 <script setup>
+    import { useAuthStore } from "../../store/auth"    
     definePageMeta({
         layout: 'category'
     })
 
+    const authStore = useAuthStore()
+
+    const showModal = ref(false)
     const currentWord = ref(0)
     const data = ref([
         {
@@ -77,7 +81,7 @@
             examples: [
             { language: "English", example: "The child’s speed in solving mathematical problems amazed us." },
             { language: "Filipino", example: "Humanga ako sa bilis ng bata sa paglutas ng mga problema sa Matematika." },
-            { language: "Hiligaynon", example: "—" } // no sample provided
+            { language: "Hiligaynon", example: "Makatilingala ang kadasigon sang bata sa pag solbar  sang mga problema sa Math." } // no sample provided
             ]
         },
         {
@@ -129,8 +133,6 @@
 
     const changeWord = (action) => {
         if (action === 'next') {
-            console.log('currentWord.value', (currentWord.value + 1))
-            console.log('data.value.length', data.value.length)
             if ((currentWord.value + 1) < data.value.length) {
                 currentWord.value ++
             }
@@ -143,6 +145,15 @@
 </script>
 
 <template>
+    <Dialog :show-modal="showModal">
+        <div class="modal-container">
+        <div class="header">
+            <label for="title">Hello There!</label>
+            <span>Lets start by telling me your info</span>
+        </div>
+            <CreateUser></CreateUser>
+        </div>
+    </Dialog>
     <div class="container">
         <div class="section-top">
             <div class="section-1">
@@ -295,6 +306,7 @@
                         width: 100%;
                         display: flex;
                         flex-direction: column;
+                        align-items: flex-start;
                         border-left: 0.2rem solid gray;
                         border-radius: 1rem;
                         padding: 1rem;
@@ -326,12 +338,34 @@
             flex-direction: row;
             gap: 0.5rem;
             margin-top: 0.5rem;
+            align-items: flex-start;
         }
     }
 
     .content {
         .section {
             height: auto !important;
+        }
+    }
+
+    .modal-container {
+        padding: 0.5rem;
+
+        .header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            label {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            span {
+                font-size: 1rem;
+                font-weight: 500;
+            }
         }
     }
 </style>

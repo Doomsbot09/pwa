@@ -1,10 +1,24 @@
 <script setup>
+    import { useAuthStore } from "../../store/auth"    
     definePageMeta({
         layout: 'category'
     })
+
+    const authStore = useAuthStore()
+    const showModal = ref(true)
+
 </script>
 
 <template>
+    <Dialog :show-modal="showModal">
+        <div class="modal-container">
+        <div class="header">
+            <label for="title">Hello There!</label>
+            <span>Lets start by telling me your info</span>
+        </div>
+            <CreateUser></CreateUser>
+        </div>
+    </Dialog>
     <div class="container">
         <div class="section-top">
             <div class="section-1">
@@ -66,7 +80,28 @@
         }
     }
 
-    /* Responsive: 2 columns on tablets, 1 on mobile */
+  .modal-container {
+    padding: 0.5rem;
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      label {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      span {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  /* Responsive: 2 columns on tablets, 1 on mobile */
   @media (max-width: 1024px) {
     
   }

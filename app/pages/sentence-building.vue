@@ -1,9 +1,13 @@
 <script setup>
+    import { useAuthStore } from "../../store/auth"    
     definePageMeta({
         layout: 'category'
     })
 
+    const authStore = useAuthStore()
     const router = useRouter()
+    
+    const showModalUser = ref(true)
     const questionSet = ref([
         {
             question: `The twins look very __________ when they wear the same clothes.`,
@@ -146,12 +150,33 @@
         }
     }
 
-    const backToHome = async () => {
+    const saveScore = async () => {
+        authStore.gameDetails.name = "Sentence Building"
+        authStore.gameDetails.score = score.value
         router.push('/')
     }
 </script>
 
 <template>
+    <Dialog :show-modal="showModalUser">
+        <div class="modal-container">
+        <div class="header">
+            <label for="title">Hello There!</label>
+            <span>Lets start by telling me your info</span>
+        </div>
+            <CreateUser @submit="showModalUser = false"></CreateUser>
+        </div>
+    </Dialog>
+    <Dialog 
+        :show-modal="showModal"
+        :show-btn="true"
+        :backdrop="true"
+        @close="saveScore()">
+        <div class="modal-content">
+            <span>Job Well Done!</span>
+            <p>You Got A Score Of {{ score }} Out Of {{ questionSet.length }}</p>
+        </div>
+    </Dialog>
     <div class="container">
         <div class="section-top">
             <div class="section-1">
@@ -210,16 +235,6 @@
             </router-link>
         </div>
     </div>
-    <Dialog 
-        :show-modal="showModal"
-        :show-btn="true"
-        :backdrop="true"
-        @close="backToHome()">
-        <div class="modal-content">
-            <span>Job Well Done!</span>
-            <p>You Got A Score Of {{ score }} Out Of {{ questionSet.length }}</p>
-        </div>
-    </Dialog>
 </template>
 
 <style>
@@ -350,6 +365,27 @@
     .card {
         .section {
             height: auto !important;
+        }
+    }
+
+    .modal-container {
+        padding: 0.5rem;
+
+        .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        label {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        span {
+            font-size: 1rem;
+            font-weight: 500;
+        }
         }
     }
 

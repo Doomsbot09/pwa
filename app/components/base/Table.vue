@@ -9,6 +9,10 @@
             type: Array,
             required: true
         },
+        isLoading: {
+            type: Boolean,
+            required: true
+        },
         fields: {
             type: Array,
             required: true
@@ -54,6 +58,7 @@
       :title="props.title"
       :rows="props.data"
       :columns="columns"
+      :loading="props.isLoading"
       row-key="name">
         <template v-slot:top-right>
             <Select 

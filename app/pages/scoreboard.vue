@@ -5,8 +5,6 @@
         layout: 'category'
     })
 
-    const user = User()
-
     const fields = ref([
         {
             name: 'name',
@@ -34,8 +32,9 @@
         }
     ])
 
-    const data = ref([])
-    
+    const user = User()
+    const usersData = ref([])
+    const isLoading = ref(false)
     const filteredBy = ref('grade')
     const filterByOptions = ref([
         {
@@ -122,9 +121,10 @@
     }
 
     const getUsers = async () => {
-        const resp = await user.getScores()
-        if(resp) {
-            data.value = resp.data.value.users.map((item) => ({...item, name: `${item.firstname} ${item.lastname}`}))
+        const { data, pending } = await user.getScores()
+        isLoading.value = pending
+        if(data) {
+            usersData.value = data.value.users.map((item) => ({...item, name: `${item.firstname} ${item.lastname}`}))
         } else {
             alert("No Internet")
         }
@@ -149,8 +149,9 @@
         <div class="section-body">
             <Table 
                 title="Students Score"
-                :data="data"
+                :data="usersData"
                 :fields="fields"
+                :isLoading="isLoading"
                 :sortable="true"
                 :searchable="true"
                 :filterable="true"

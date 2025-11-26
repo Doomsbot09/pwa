@@ -1,0 +1,4 @@
+.item-hover:hover {
+    box-shadow: 0 4px 12px #1976D2;
+    cursor: pointer;
+}

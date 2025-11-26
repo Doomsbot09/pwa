@@ -181,6 +181,7 @@
                     <div class="grid-item" v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
                             @click="selectAnswer(item.answer, index)" 
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (selectedAnswer === index && item.answer === true),
                                 'bg-red text-white': (selectedAnswer === index && item.answer === false) 

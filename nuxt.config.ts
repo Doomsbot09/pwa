@@ -1,12 +1,10 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV === 'development' },
+
+  sourcemap: false,
 
   nitro: {
     preset: "vercel",
-    prerender: {
-      routes: ['/'],
-    },
   },
 
   modules: [
@@ -21,8 +19,9 @@ export default defineNuxtConfig({
     registerType: 'autoUpdate',
     injectRegister: false,
 
+    // ❗ Disable heavy asset generation in Vercel
     pwaAssets: {
-      disabled: false,
+      disabled: process.env.NODE_ENV === 'production',
       config: true,
     },
 
@@ -40,23 +39,19 @@ export default defineNuxtConfig({
     },
 
     devOptions: {
-      enabled: true,
+      enabled: process.env.NODE_ENV === 'development',
       suppressWarnings: true,
-      navigateFallback: '/',
-      navigateFallbackAllowlist: [/^\/$/],
-      type: 'module',
+      type: 'module'
     },
 
     experimental: {
-      enableWorkboxPayloadQueryParams: true,
+      enableWorkboxPayloadQueryParams: false, // disable slow feature
     },
 
     registerWebManifestInRouteRules: true,
-
-    client: {
-      installPrompt: true,
-    },
   },
+
+  css: ['@/assets/css/main.css'],
 
   components: [
     {

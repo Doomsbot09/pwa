@@ -1,5 +1,7 @@
 <script setup>
-    import { useAuthStore } from "../../store/auth"    
+    import { useAuthStore } from "../../store/auth"
+    import User from '@/api/users'
+
     definePageMeta({
         layout: 'category'
     })
@@ -81,6 +83,7 @@
 
     const authStore = useAuthStore()
     const router = useRouter()
+    const user = User()
 
     const showUserModal = ref(true)
     const showModal = ref(false)
@@ -114,15 +117,23 @@
                 selectedAnswer.value = null
                 showMessage.value = ''
             }, 1000)
-
-            console.log("save to score board")
         }
     }
 
     const saveScore = async () => {
-        authStore.gameDetails.name = "Spelling Quiz"
-        authStore.gameDetails.score = score.value
-        router.push('/')
+        const payload = {
+            ...authStore.userDetails,
+            score: score.value,
+            game: "Spelling Quiz"
+        }
+        const result = await user.saveGameScore(payload)
+
+        if (result) {
+            console.log(result)
+            router.push('/')
+        } else {
+            alert("No Internet")
+        }
     }
 
 </script>
@@ -179,7 +190,8 @@
                 <div class="grid-container">
                     <div class="grid-item" v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
-                            @click="selectAnswer(item.answer, index)" 
+                            @click="selectAnswer(item.answer, index)"
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (selectedAnswer === index && item.answer === true),
                                 'bg-red text-white': (selectedAnswer === index && item.answer === false) 

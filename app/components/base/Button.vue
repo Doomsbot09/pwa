@@ -12,5 +12,5 @@
 </script>
 
 <template>
-    <q-btn :label="props.label" :color="props.color"></q-btn>
+    <q-btn fab-mini :label="props.label" :color="props.color"></q-btn>
 </template>

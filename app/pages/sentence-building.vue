@@ -1,11 +1,14 @@
 <script setup>
     import { useAuthStore } from "../../store/auth"    
+    import User from '@/api/users'
+
     definePageMeta({
         layout: 'category'
     })
 
     const authStore = useAuthStore()
     const router = useRouter()
+    const user = User()
     
     const showModalUser = ref(true)
     const questionSet = ref([
@@ -145,15 +148,23 @@
                 selectedAnswer.value = null
                 showMessage.value = ''
             }, 1000)
-
-            console.log("save to score board")
         }
     }
 
     const saveScore = async () => {
-        authStore.gameDetails.name = "Sentence Building"
-        authStore.gameDetails.score = score.value
-        router.push('/')
+        const payload = {
+            ...authStore.userDetails,
+            score: score.value,
+            game: "Sentence Building"
+        }
+        const result = await user.saveGameScore(payload)
+
+        if (result) {
+            console.log(result)
+            router.push('/')
+        } else {
+            alert("No Internet")
+        }
     }
 </script>
 
@@ -173,7 +184,7 @@
         :backdrop="true"
         @close="saveScore()">
         <div class="modal-content">
-            <span>Job Well Done!</span>
+            <span>Job Well Done {{ authStore.userDetails.firstname }}!</span>
             <p>You Got A Score Of {{ score }} Out Of {{ questionSet.length }}</p>
         </div>
     </Dialog>
@@ -211,7 +222,8 @@
                 <div class="grid-container">
                     <div class="grid-item" v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
-                            @click="selectAnswer(item.answer, index)" 
+                            @click="selectAnswer(item.answer, index)"
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (selectedAnswer === index && item.answer === true),
                                 'bg-red text-white': (selectedAnswer === index && item.answer === false) 

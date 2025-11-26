@@ -1,5 +1,7 @@
 <script setup>
-    import { useAuthStore } from "../../store/auth"    
+    import { useAuthStore } from "../../store/auth"
+    import User from '@/api/users'
+
     definePageMeta({
         layout: 'category'
     })
@@ -85,6 +87,8 @@
     
     const authStore = useAuthStore()
     const router = useRouter()
+    const user = User()
+
     const showModal = ref(false)
     const showUserModal = ref(true)
     
@@ -147,9 +151,19 @@
     }
 
     const saveScore = async () => {
-        authStore.gameDetails.name = "Word Recognition"
-        authStore.gameDetails.score = score.value
-        router.push('/')
+        const payload = {
+            ...authStore.userDetails,
+            score: score.value,
+            game: "Word Recognition"
+        }
+        const result = await user.saveGameScore(payload)
+
+        if (result) {
+            console.log(result)
+            router.push('/')
+        } else {
+            alert("No Internet")
+        }
     }
 </script>
 
@@ -211,6 +225,7 @@
                         v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
                             @click="selectAnswer(item.answer, index, true)" 
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (multiSelectedAnswer.includes(index) && item.answer === true),
                                 'bg-red text-white': (multiSelectedAnswer.includes(index) && item.answer === false) 
@@ -223,7 +238,8 @@
                         v-if="questionSet[currentSet]['type'] === 'words' && !questionSet[currentSet]['isMultipleSelect']" 
                         v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
-                            @click="selectAnswer(item.answer, index, false)" 
+                            @click="selectAnswer(item.answer, index, false)"
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (selectedAnswer === index && item.answer === true),
                                 'bg-red text-white': (selectedAnswer === index && item.answer === false) 
@@ -236,7 +252,8 @@
                         v-if="questionSet[currentSet]['type'] === 'pictures' && !questionSet[currentSet]['isMultipleSelect']" 
                         v-for="(item, index) in questionSet[currentSet]['choices']" :key="index">
                         <Card 
-                            @click="selectAnswer(item.answer, index, false)" 
+                            @click="selectAnswer(item.answer, index, false)"
+                            class="item-hover"
                             :class="{
                                 'bg-green text-white': (selectedAnswer === index && item.answer === true),
                                 'bg-red text-white': (selectedAnswer === index && item.answer === false) 
